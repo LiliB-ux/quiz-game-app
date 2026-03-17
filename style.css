@@ -21,15 +21,21 @@ h1 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-#question {
-  font-size: 22px;
-  margin-bottom: 25px;
+#progress {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 10px;
 }
 
 #score {
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 20px;
+}
+
+#question {
+  font-size: 22px;
+  margin-bottom: 25px;
 }
 
 button {
@@ -49,10 +55,16 @@ button:hover {
   background: #dddded;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
 #result {
   font-size: 28px;
   margin-top: 25px;
   font-weight: bold;
+  line-height: 1.4;
 }
 
 #next-btn {
