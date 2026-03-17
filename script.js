@@ -56,10 +56,11 @@ let score = 0;
 let answered = false;
 
 const questionEl = document.getElementById("question");
-const answerButtons = document.querySelectorAll("#answers button");
 const resultEl = document.getElementById("result");
 const nextBtn = document.getElementById("next-btn");
 const scoreEl = document.getElementById("score");
+const progressEl = document.getElementById("progress");
+const answersContainer = document.getElementById("answers");
 
 function loadQuestion() {
   answered = false;
@@ -68,14 +69,17 @@ function loadQuestion() {
 
   const q = questions[currentQuestion];
   questionEl.textContent = q.question;
-
-  answerButtons.forEach((button, index) => {
-    button.textContent = q.answers[index];
-    button.disabled = false;
-    button.style.backgroundColor = "";
-  });
-
   scoreEl.textContent = `Score: ${score}`;
+  progressEl.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+
+  answersContainer.innerHTML = "";
+
+  q.answers.forEach((answer, index) => {
+    const button = document.createElement("button");
+    button.textContent = answer;
+    button.onclick = () => checkAnswer(index);
+    answersContainer.appendChild(button);
+  });
 }
 
 function checkAnswer(index) {
@@ -83,19 +87,20 @@ function checkAnswer(index) {
 
   answered = true;
   const q = questions[currentQuestion];
+  const buttons = answersContainer.querySelectorAll("button");
 
-  answerButtons.forEach(button => {
+  buttons.forEach((button) => {
     button.disabled = true;
   });
 
   if (index === q.correct) {
     resultEl.textContent = "Correct!";
     score++;
-    answerButtons[index].style.backgroundColor = "#b9f6ca";
+    buttons[index].style.backgroundColor = "#b9f6ca";
   } else {
     resultEl.textContent = "Wrong answer.";
-    answerButtons[index].style.backgroundColor = "#ffcccb";
-    answerButtons[q.correct].style.backgroundColor = "#b9f6ca";
+    buttons[index].style.backgroundColor = "#ffcccb";
+    buttons[q.correct].style.backgroundColor = "#b9f6ca";
   }
 
   scoreEl.textContent = `Score: ${score}`;
@@ -113,26 +118,28 @@ function nextQuestion() {
 }
 
 function showFinalScore() {
+  progressEl.textContent = "Finished";
   questionEl.textContent = "Quiz Complete!";
-  resultEl.textContent = `You scored ${score} out of ${questions.length}.`;
-  document.getElementById("answers").innerHTML = `
-    <button onclick="restartQuiz()">Play Again</button>
-  `;
+  
+  let message = "";
+  if (score === questions.length) {
+    message = "Perfect score — excellent work!";
+  } else if (score >= 3) {
+    message = "Nice job — solid result.";
+  } else {
+    message = "Good try — keep practicing.";
+  }
+
+  resultEl.textContent = `You scored ${score} out of ${questions.length}. ${message}`;
+
+  answersContainer.innerHTML = `<button onclick="restartQuiz()">Play Again</button>`;
   nextBtn.style.display = "none";
 }
 
 function restartQuiz() {
   currentQuestion = 0;
   score = 0;
-
-  document.getElementById("answers").innerHTML = `
-    <button onclick="checkAnswer(0)"></button>
-    <button onclick="checkAnswer(1)"></button>
-    <button onclick="checkAnswer(2)"></button>
-    <button onclick="checkAnswer(3)"></button>
-  `;
-
-  location.reload();
+  loadQuestion();
 }
 
 loadQuestion();
