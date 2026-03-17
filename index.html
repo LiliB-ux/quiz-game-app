@@ -10,20 +10,18 @@
 <h1>Tech Quiz</h1>
 
 <div id="quiz-container">
-<p id="question"></p>
+  <p id="score">Score: 0</p>
+  <p id="question"></p>
 
-<div id="answers">
-<button onclick="checkAnswer('A')">A</button>
-<button onclick="checkAnswer('B')">B</button>
-<button onclick="checkAnswer('C')">C</button>
-<button onclick="checkAnswer('D')">D</button>
+  <div id="answers">
+    <button onclick="checkAnswer(0)"></button>
+    <button onclick="checkAnswer(1)"></button>
+    <button onclick="checkAnswer(2)"></button>
+    <button onclick="checkAnswer(3)"></button>
+  </div>
+
+  <p id="result"></p>
+  <button id="next-btn" onclick="nextQuestion()" style="display: none;">Next Question</button>
 </div>
-
-<p id="result"></p>
-
-</div>
-
-<script src="script.js"></script>
-
-</body>
+  <script src="script.js"></script>
 </html>
